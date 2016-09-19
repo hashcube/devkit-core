@@ -109,6 +109,7 @@ exports.IndexHTML = Class(function () {
       html.push('<!DOCTYPE html>');
       html.push('<html>');
       html.push('  <head>');
+      html.push('    <meta charset="UTF-8">');
       html.push('    <title>' + app.manifest.title + '</title>');
       applyOpenGraphMetaProperties(html, config);
       html.push('  </head>');
@@ -164,7 +165,7 @@ exports.IndexHTML = Class(function () {
       html.push('      onResize(true);');
       html.push('    </script>');
       html.push('  </body>');
-      html.push('</html>)');
+      html.push('</html>');
       return html.join('\n');
     });
   };
@@ -306,6 +307,7 @@ exports.GameHTML = Class(function () {
 
         html.push(
           '<head>',
+          '<meta charset="UTF-8">',
             config.browser.baseURL
               ? '<base href="' + config.browser.baseURL + '">'
               : '',
