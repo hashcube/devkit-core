@@ -75,6 +75,12 @@ exports.extend = function (app, config) {
   config.bundleID = app.manifest.ios && app.manifest.ios.bundleID || defaultName;
   config.packageName = app.manifest.android && app.manifest.android.packageName || defaultName;
 
+  var ios = app.manifest.ios;
+  if (ios) {
+    config.widgetID = ios.widgetID || "widget";
+    config.widgetGroup = ios.widgetGroup || "group." + config.bundleID;
+  }
+
   var title = app.manifest.title;
   var titles = app.manifest.titles || {};
   if (title === null && titles === null) {
