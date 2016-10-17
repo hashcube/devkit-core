@@ -80,19 +80,23 @@ exports.setupStreams = function (api, app, config) {
 
   function runIOSBuild() {
     var iosBuild = require('../../../../modules/native-ios/build');
+
+    return iosBuild.build(api, app, config);
+  }
+
+  function runIOSCreate() {
+    var iosBuild = require('../../../../modules/native-ios/build');
     return Promise
       .resolve()
       .then(function () {
         if (!config.repack) {
           return iosBuild.createXcodeProject(config);
         }
-      })
-      .then(function () {
-        return iosBuild.build(api, app, config);
       });
   }
 
-  api.streams.registerFunction('ios', runIOSBuild);
+  api.streams.registerFunction('ios-create-project', runIOSCreate);
+  api.streams.registerFunction('ios-build-project', runIOSBuild);
 };
 
 exports.getStreamOrder = function (api, app, config) {
@@ -103,7 +107,9 @@ exports.getStreamOrder = function (api, app, config) {
 
   var order = nativeBuild.getStreamOrder(api, app, config);
   if (!config.resourcesOnly) {
-    order.push('ios');
+    order.push('ios-create-project');
+    order.push('ios-build-widget');
+    order.push('ios-build-project');
   }
 
   return order;
