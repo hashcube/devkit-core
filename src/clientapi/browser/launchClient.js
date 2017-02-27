@@ -25,6 +25,10 @@ GLOBAL.Promise = Promise;
 var isSimulator = GLOBAL.CONFIG && !!CONFIG.simulator;
 var isNative = /^native/.test(CONFIG.target);
 
+if (CONFIG.target === 'browser-desktop') {
+  import ..debugging.nativeShim;
+}
+
 if (isSimulator) {
   // prefix filenames in the debugger
   jsio.__env.debugPath = function (path) { return 'http://' + (CONFIG.bundleID || CONFIG.packageName) + '/' + path.replace(/^[\.\/]+/, ''); };
