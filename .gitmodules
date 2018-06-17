@@ -4,6 +4,7 @@
 [submodule "modules/native-ios"]
 	path = modules/native-ios
 	url = https://github.com/hashcube/native-ios.git
+	branch = hc
 [submodule "modules/timestep"]
 	path = modules/timestep
 	url = https://github.com/hashcube/timestep.git
