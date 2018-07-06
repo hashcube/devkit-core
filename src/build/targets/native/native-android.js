@@ -66,18 +66,15 @@ exports.init = function (api, app, config) {
     Promise.resolve(spawnWithLogger(api, 'rm', ["-rf", path.join(config.outputPath,
         "../..",
         app.manifest.shortName)])
-        .then(function () {
-            return spawnWithLogger(api, 'pwd', ["-L"]);
-        })
+        .then(spawnWithLogger(api, 'pwd', ["-L"]))
         // copy template
-        .then(function () {
-            return spawnWithLogger(api, 'cp',
-                ["-r",
-                    "modules/devkit-core/modules/native-android/gradleops/AndroidSeed",
-                    path.join(config.outputPath,
-                        "../..",
-                        app.manifest.shortName)])
-        })
+        .then(spawnWithLogger(api, 'cp',
+            ["-r",
+                "modules/devkit-core/modules/native-android/gradleops/AndroidSeed",
+                path.join(config.outputPath,
+                    "../..",
+                    app.manifest.shortName)])
+        )
     )
 
     var argv = exports.opts.argv;
