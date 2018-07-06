@@ -3,6 +3,7 @@ var Promise = require('bluebird');
 var createBuildTarget = require('../../index').createBuildTarget;
 var chalk = require('chalk');
 var spawn = require('child_process').spawn;
+const execSync = require('child_process').execSync;
 
 exports.helpText = 'For release builds, please set the environment variables '
     + 'DEVKIT_ANDROID_KEYSTORE, DEVKIT_ANDROID_STOREPASS, DEVKIT_ANDROID_KEYPASS, '
@@ -59,24 +60,6 @@ exports.init = function (api, app, config) {
             "assets/resources");
     }
 
-    //cp project source here
-
-
-    // remove old project
-    Promise.resolve(spawnWithLogger(api, 'rm', ["-rf", path.join(config.outputPath,
-        "../..",
-        app.manifest.shortName)])
-        .then(spawnWithLogger(api, 'pwd', ["-L"]))
-        // copy template
-        .then(spawnWithLogger(api, 'cp',
-            ["-r",
-                "modules/devkit-core/modules/native-android/gradleops/AndroidSeed",
-                path.join(config.outputPath,
-                    "../..",
-                    app.manifest.shortName)])
-        )
-    )
-
     var argv = exports.opts.argv;
 
     config.isAndroid = true;
@@ -107,6 +90,17 @@ exports.setupStreams = function (api, app, config) {
         return build(api, app, config);
     }
 
+    // remove old project
+    execSync('rm -rf '+ path.join(config.outputPath,
+        "../..",
+        app.manifest.shortName))
+    // copy template
+    execSync( 'cp -r '+
+        "modules/devkit-core/modules/native-android/gradleops/AndroidSeed " +
+        path.join(config.outputPath,
+            "../..",
+            app.manifest.shortName))
+
     api.streams.registerFunction('android', androidBuild);
 };
 
@@ -123,28 +117,3 @@ exports.getStreamOrder = function (api, app, config) {
 
     return order;
 };
-
-
-
-function spawnWithLogger(api, name, args, opts) {
-    return new Promise(function (resolve, reject) {
-        var logger = api.logging.get(name);
-        logger.log(chalk.green(name + ' ' + args.join(' ')));
-        var streams = logger.createStreams(['stdout'], false);
-        var child = spawn(name, args, opts);
-        child.stdout.pipe(streams.stdout);
-        child.stderr.pipe(streams.stdout);
-        child.on('close', function (code) {
-            if (code) {
-                var err = new BuildError(chalk.green(name) + chalk.red(' exited with non-zero exit code (' + code + ')'));
-                err.stdout = streams.get('stdout');
-                err.code = code;
-                reject(err);
-            } else if (opts && opts.capture) {
-                resolve(streams.get('stdout'));
-            } else {
-                resolve();
-            }
-        });
-    });
-}
