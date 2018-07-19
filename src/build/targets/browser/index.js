@@ -161,7 +161,9 @@ exports.setupStreams = function (api, app, config) {
       inlineCache: true,
       filename: config.target + '.js',
       composite: function (tasks, js, cache, jsConfig) {
-        return 'NATIVE=false;'
+        var native_str = '{events: {registerHandler: function () {}}, plugins: {sendEvent: function () {}, sendRequest: function () {}}}';
+
+        return 'NATIVE=' + native_str + ';'
           + 'CACHE=' + JSON.stringify(cache) + ';\n'
           + js + ';'
           + 'GC_LOADER.onLoadApp("import ' + INITIAL_IMPORT + '");';
