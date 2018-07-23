@@ -5,7 +5,7 @@
   "version": "v4.5.4",
   "repository": {
     "type": "git",
-    "url": "http://github.com/CodeCombiner/devkit-core.git"
+    "url": "http://github.com/hashcube/devkit-core.git"
   },
   "dependencies": {
     "archiver": "^0.14.4",
