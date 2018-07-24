@@ -7,7 +7,7 @@
 	branch = hc
 [submodule "modules/timestep"]
 	path = modules/timestep
-	url = https://github.com/hashcube/timestep.git#hc
+	url = https://github.com/hashcube/timestep.git
 	branch = hc
 [submodule "modules/squill"]
 	path = modules/squill
