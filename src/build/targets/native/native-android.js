@@ -1,8 +1,6 @@
 var path = require('path');
 var Promise = require('bluebird');
 var createBuildTarget = require('../../index').createBuildTarget;
-var chalk = require('chalk');
-var spawn = require('child_process').spawn;
 const execSync = require('child_process').execSync;
 
 exports.helpText = 'For release builds, please set the environment variables '
