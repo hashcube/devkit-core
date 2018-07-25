@@ -1,6 +1,6 @@
 [submodule "modules/native-android"]
 	path = modules/native-android
-	url = https://github.com/CodeCombiner/native-android.git
+	url = https://github.com/hashcube/native-android.git
 	branch = generate
 [submodule "modules/native-ios"]
 	path = modules/native-ios
