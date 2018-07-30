@@ -117,6 +117,7 @@ exports.IndexHTML = Class(function () {
       html.push('  <body style="margin:0;padding:0;'
               + (config.browser.desktopBodyCSS || '')
               + '" onresize="onResize()">');
+      html.push(config.browser.headertopHTML || '');
       html.push('    <div id="gameWrapper">');
       html.push('      <iframe id="game" src="game.html"'
               + 'style="display:block;border:0;margin:0;padding:0;">');
