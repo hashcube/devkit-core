@@ -164,6 +164,7 @@ exports.IndexHTML = Class(function () {
       html.push('');
       html.push('      onResize(true);');
       html.push('    </script>');
+      html.push(config.browser.footertopHTML || '');
       html.push('  </body>');
       html.push('</html>');
       return html.join('\n');
