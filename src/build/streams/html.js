@@ -163,6 +163,9 @@ exports.IndexHTML = Class(function () {
       html.push('      };');
       html.push('');
       html.push('      onResize(true);');
+      html.push('window.redirect = function (url) {');
+      html.push('window.top.location.href = url;');
+      html.push('};');
       html.push('    </script>');
       html.push('  </body>');
       html.push('</html>');
