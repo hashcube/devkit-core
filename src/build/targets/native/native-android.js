@@ -100,11 +100,13 @@ exports.setupStreams = function (api, app, config) {
     "../..",
     app.manifest.shortName,"build.gradle")))
   {
+    //execSync('node modules/devkit-core/modules/native-android/checkSymlinks');
     execSync('cp -r ' +
       "modules/devkit-core/modules/native-android/gradleops/AndroidSeed " +
       path.join(config.outputPath,
         "../..",
         app.manifest.shortName));
+    execSync('node modules/devkit-core/modules/native-android/checkSymlinks '+app.manifest.shortName);
   }
 
   api.streams.registerFunction('android', androidBuild);
