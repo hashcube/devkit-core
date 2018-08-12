@@ -1,7 +1,8 @@
 var path = require('path');
 var Promise = require('bluebird');
 var createBuildTarget = require('../../index').createBuildTarget;
-const execSync = require('child_process').execSync;
+var execSync = require('child_process').execSync;
+var fs = require('fs-extra');
 
 exports.helpText = 'For release builds, please set the environment variables '
   + 'DEVKIT_ANDROID_KEYSTORE, DEVKIT_ANDROID_STOREPASS, DEVKIT_ANDROID_KEYPASS, '
@@ -76,8 +77,14 @@ exports.init = function (api, app, config) {
 var nativeBuild = require('./native-build');
 
 exports.setupStreams = function (api, app, config) {
+
   if (config.isSimulated) {
     return require('../browser').setupStreams(api, app, config);
+  }
+
+  // rewrite javascript content
+  if(fs.existsSync(config.outputResourcePath)){
+    fs.removeSync(config.outputResourcePath);
   }
 
   nativeBuild.setupStreams(api, app, config);
@@ -88,16 +95,17 @@ exports.setupStreams = function (api, app, config) {
     return build(api, app, config);
   }
 
-  // remove old project
-  execSync('rm -rf ' + path.join(config.outputPath,
+  // do not copy Android project files if they exist
+  if(!fs.existsSync(path.join(config.outputPath,
     "../..",
-    app.manifest.shortName))
-  // copy template
-  execSync('cp -r ' +
-    "modules/devkit-core/modules/native-android/gradleops/AndroidSeed " +
-    path.join(config.outputPath,
-      "../..",
-      app.manifest.shortName))
+    app.manifest.shortName,"build.gradle")))
+  {
+    execSync('cp -r ' +
+      "modules/devkit-core/modules/native-android/gradleops/AndroidSeed " +
+      path.join(config.outputPath,
+        "../..",
+        app.manifest.shortName));
+  }
 
   api.streams.registerFunction('android', androidBuild);
 };
