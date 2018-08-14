@@ -53,7 +53,6 @@ createBuildTarget(exports);
 exports.init = function (api, app, config) {
   if (!config.isSimulated) {
     config.outputResourcePath = path.resolve(config.outputPath,
-      "../..",
       app.manifest.shortName,
       "tealeaf/src/main",
       "assets/resources");
@@ -97,16 +96,14 @@ exports.setupStreams = function (api, app, config) {
 
   // do not copy Android project files if they exist
   if(!fs.existsSync(path.join(config.outputPath,
-    "../..",
     app.manifest.shortName,"build.gradle")))
   {
     //execSync('node modules/devkit-core/modules/native-android/checkSymlinks');
     execSync('cp -r ' +
       "modules/devkit-core/modules/native-android/gradleops/AndroidSeed " +
       path.join(config.outputPath,
-        "../..",
         app.manifest.shortName));
-    execSync('node modules/devkit-core/modules/native-android/checkSymlinks '+app.manifest.shortName);
+    execSync('node modules/devkit-core/modules/native-android/checkSymlinks '+app.manifest.shortName +' '+config.scheme);
   }
 
   api.streams.registerFunction('android', androidBuild);
