@@ -1,7 +1,7 @@
 [submodule "modules/native-android"]
 	path = modules/native-android
 	url = https://github.com/CodeCombiner/native-android.git
-	branch = hc
+	branch = arm64
 [submodule "modules/native-ios"]
 	path = modules/native-ios
 	url = https://github.com/hashcube/native-ios.git#hc
