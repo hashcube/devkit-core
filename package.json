@@ -2,7 +2,7 @@
   "name": "devkit-core",
   "author": "Game Closure",
   "description": "devkit engine",
-  "version": "v5.0.0-sticker",
+  "version": "v5.0.1-sticker",
   "repository": {
     "type": "git",
     "url": "http://github.com/hashcube/devkit-core.git"
