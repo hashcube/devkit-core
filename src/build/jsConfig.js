@@ -34,7 +34,7 @@ exports.JSConfig = Class(function () {
       splash: {
         autoHide: !(manifest.splash && manifest.splash.autoHide === false)
       },
-      useWebGL: manifest.browser && manifest.browser.canvas && manifest.browser.canvas.useWebGL || false,
+      useWebGL: canvas.useWebGL || false,
       preserveDrawingBuffer: canvas.preserveDrawingBuffer || true,
       maxTextureMegabytes: canvas.maxTextureMegabytes || 256
     };
