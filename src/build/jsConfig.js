@@ -4,7 +4,9 @@ function deepCopy(obj) { return obj && JSON.parse(JSON.stringify(obj)); }
 
 exports.JSConfig = Class(function () {
   this.init = function (api, app, config) {
-    var manifest = app.manifest;
+    var manifest = app.manifest,
+      browser = manifest.browser,
+      canvas = browser ? browser.canvas : undefined;
 
     this._config = {
       appID: manifest.appID,
@@ -32,7 +34,9 @@ exports.JSConfig = Class(function () {
       splash: {
         autoHide: !(manifest.splash && manifest.splash.autoHide === false)
       },
-      useWebGL: manifest.browser && manifest.browser.canvas && manifest.browser.canvas.useWebGL || false
+      useWebGL: manifest.browser && manifest.browser.canvas && manifest.browser.canvas.useWebGL || false,
+      preserveDrawingBuffer: canvas.preserveDrawingBuffer || true,
+      maxTextureMegabytes: canvas.maxTextureMegabytes || 256
     };
 
     if (manifest.disableNativeViews) {
