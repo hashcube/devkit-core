@@ -1,5 +1,5 @@
 window.GC_LOADER = (function (window) {
-  window.console.log = function () {};
+  console.log = function () {};
   var document = window.document;
   var userAgent = navigator.userAgent;
   var CONFIG = window.CONFIG;
