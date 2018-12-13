@@ -45,8 +45,8 @@ exports.sprite = function (api, config) {
 
     stream = api.streams.createFileStream({
       onFile: function (file) {
-        if ((file.extname in SPRITABLE_EXTS)
-            && file.getOption('sprite') !== false) {
+        if ((file.extname in SPRITABLE_EXTS) &&
+          file.getOption('sprite') !== false) {
           spriter.addFile(file);
           return api.streams.REMOVE_FILE;
         }
@@ -79,7 +79,7 @@ function scaleToString(scales) {
 }
 
 var Group = Class(function () {
-  this.init = function (key, sheetName, compressOpts) {
+  this.init = function (key, sheetName, compressOpts, powerOfTwoSheets) {
     this.key = key;
     this.sheetName = sheetName;
     this.compress = compressOpts;
@@ -89,6 +89,7 @@ var Group = Class(function () {
     var isJPG = compressOpts && compressOpts.format == 'jpg';
     this.ext = isJPG ? '.jpg' : '.png';
     this.mime = isJPG ? 'image/jpeg' : 'image/png';
+    this.powerOfTwoSheets = powerOfTwoSheets ? powerOfTwoSheets : false;
   };
 
   this.addFile = function (file) {
@@ -151,7 +152,9 @@ var DevKitSpriter = Class(function () {
     this._result.update(previousResult);
   };
 
-  this.getSizes = function () { return this._result.toJSON().sizes; };
+  this.getSizes = function () {
+    return this._result.toJSON().sizes;
+  };
 
   function compressOptsToString(opts) {
     var keys = Object.keys(opts);
@@ -163,7 +166,7 @@ var DevKitSpriter = Class(function () {
       .join(',');
   }
 
-  function isPowerOfTwoSheets(file) {
+  this.isPowerOfTwoSheets = function (file) {
     var powerOfTwoSheets = file.getOption('powerOfTwoSheets');
     if (powerOfTwoSheets === undefined) {
       // legacy option is called po2
@@ -175,7 +178,7 @@ var DevKitSpriter = Class(function () {
     }
 
     return !!powerOfTwoSheets;
-  }
+  };
 
   function getUniqueSheetName(name, animFrameKey) {
     // compute a unique sheet name
@@ -204,7 +207,7 @@ var DevKitSpriter = Class(function () {
     animFrameKey = animFrameKey && animFrameKey[1] || '';
 
     var compressOpts = file.getCompressOpts();
-    var powerOfTwoSheets = isPowerOfTwoSheets(file);
+    var powerOfTwoSheets = this.isPowerOfTwoSheets(file);
 
     var name = file.getOption('group') ||
       path.dirname(file.targetRelativePath).replace(/\//g, '-');
@@ -218,7 +221,7 @@ var DevKitSpriter = Class(function () {
 
     if (!this._groups[key]) {
       var sheetName = getUniqueSheetName.call(this, name, animFrameKey);
-      this._groups[key] = new Group(key, sheetName, compressOpts);
+      this._groups[key] = new Group(key, sheetName, compressOpts, powerOfTwoSheets);
     }
 
     this._groups[key].addFile(file);
