@@ -74,7 +74,7 @@ if (splash) {
           splash.style.pointerEvents = 'none';
           setTimeout(function() {
             splash.parentNode.removeChild(splash);
-          }, 500);
+          }, 100);
         }, 100);
       };
   }
