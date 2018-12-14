@@ -69,13 +69,11 @@ if (splash) {
         // the length of time that nothing is happening. However, it also
         // makes the transition into the game much smoother. The initial timeout
         // is for images to pop in.
-        setTimeout(function() {
-          splash.style.opacity = 0;
-          splash.style.pointerEvents = 'none';
-          setTimeout(function() {
-            splash.parentNode.removeChild(splash);
-          }, 100);
-        }, 100);
+
+        // Removed timeouts for instant game env. since It has it's own loader
+        splash.style.opacity = 0;
+        splash.style.pointerEvents = 'none';
+        splash.parentNode.removeChild(splash);
       };
   }
 }
