@@ -138,7 +138,7 @@ exports.JSCompiler = Class(function () {
   this.compress = function (filename, src, opts, cb) {
 
     var closureOpts = [
-      '--compilation_level', 'SIMPLE_OPTIMIZATIONS',
+      '--compilation_level', 'ADVANCED_OPTIMIZATIONS',
       '--jscomp_off', 'internetExplorerChecks',
       '--language_in', 'ECMASCRIPT5'
     ];
