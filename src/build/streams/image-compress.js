@@ -95,12 +95,8 @@ exports.create = function (api, app, config) {
       .then(function (stat) {
         initialSize = stat.size;
         var args = [];
-        if (opts.format == 'png') {
-          if (opts.quantize) {
-            args.push('--plugin', 'pngquant');
-            delete opts.quantize;
-          }
-        }
+        args.push('--plugin', 'pngquant');
+        delete opts.quantize;
 
         for (var key in opts) {
           if (key !== 'format') {
