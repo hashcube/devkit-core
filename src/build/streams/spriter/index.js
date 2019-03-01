@@ -15,6 +15,7 @@ var SPRITABLE_EXTS = {
 };
 
 var CACHE_FILENAME = "devkit-spriter";
+var DEFAULT_MAX_SIZE = 1024;
 
 /**
  * Removes spritable image files from a file stream, sprites them, and inserts
@@ -89,6 +90,7 @@ var Group = Class(function () {
     var isJPG = compressOpts && compressOpts.format == 'jpg';
     this.ext = isJPG ? '.jpg' : '.png';
     this.mime = isJPG ? 'image/jpeg' : 'image/png';
+    this.maxSize = DEFAULT_MAX_SIZE;
   };
 
   this.addFile = function (file) {
@@ -311,6 +313,7 @@ var DevKitSpriter = Class(function () {
         name: group.sheetName,
         spritesheetsDirectory: this._spritesheetsDirectory,
         powerOfTwoSheets: group.powerOfTwoSheets,
+        maxSize: group.maxSize,
         filenames: group.filenames,
         compress: group.compress,
         scale: group.scale,
