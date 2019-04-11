@@ -23,7 +23,56 @@ env.debugPath = function (path) {
   return protocol + '//' + domain + '/' + path.replace(/^[.\/\\]+/, '');
 };
 
-GLOBAL.console = logging.get('console');
+// If DEBUG, then console must print to both Node Console and Chrome Dev Tools Console
+
+if (GLOBAL.DEBUG === true) {
+  GLOBAL.consoleNode = logging.get('console');
+
+  var newConsole = (function(oldCons){
+    var parseArguments = function (args) {
+      var msg;
+      try {
+        msg = Array.prototype.map.call(args, function(a) {
+          if ((a instanceof Error) && a.message) {
+            return 'Error:' + a.message + '\nStack:' + a.stack + '\nArguments:' + a.arguments;
+          }
+          return (typeof a == 'string' ? a : JSON.stringify(a));
+        }).join(' ') + '\n';
+      } catch(e) {
+        msg = Array.prototype.join.call(args, ' ') + '\n';
+      }
+      return msg;
+    };
+    return {
+      log: function(){
+        oldCons.log.apply(null, arguments);
+        var msg = parseArguments(arguments);
+        GLOBAL.consoleNode.log(msg);
+      },
+      info: function (text) {
+        oldCons.info.apply(null, arguments);
+        var msg = parseArguments(arguments);
+        GLOBAL.consoleNode.info(msg);
+      },
+      warn: function (text) {
+        oldCons.warn.apply(null, arguments);
+        var msg = parseArguments(arguments);
+        GLOBAL.consoleNode.warn(msg);
+      },
+      error: function (text) {
+        oldCons.error.apply(null, arguments);
+        var msg = parseArguments(arguments);
+        GLOBAL.consoleNode.error(msg);
+      }
+    };
+  }(GLOBAL.console));
+
+//Redefine the old console
+  GLOBAL.console = newConsole;
+} else {
+  GLOBAL.console = logging.get('console');
+}
+
 window.self = window;
 
 // add bluebird promise implementation to global scope
@@ -50,12 +99,12 @@ startApp();
 function analytics () {
   var config = GLOBAL.CONFIG;
   var params = 'appID:' + encodeURIComponent(config.appID || '') + '&' +
-      'bundleID:' + encodeURIComponent(config.bundleID || '') + '&' +
-      'appleID:' + encodeURIComponent(config.appleID || '') + '&' +
-      'version:' + encodeURIComponent(config.version || '') + '&' +
-      'sdkVersion:' + encodeURIComponent(config.sdkVersion || '') + '&' +
-      'isAndroid:' + (device.isAndroid ? 1 : 0) + '&' +
-      'isIOS:' + (device.isIOS ? 1 : 0);
+    'bundleID:' + encodeURIComponent(config.bundleID || '') + '&' +
+    'appleID:' + encodeURIComponent(config.appleID || '') + '&' +
+    'version:' + encodeURIComponent(config.version || '') + '&' +
+    'sdkVersion:' + encodeURIComponent(config.sdkVersion || '') + '&' +
+    'isAndroid:' + (device.isAndroid ? 1 : 0) + '&' +
+    'isIOS:' + (device.isIOS ? 1 : 0);
 
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'http://www.gameclosure.com/analytics?' + params, true);
