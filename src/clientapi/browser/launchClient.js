@@ -120,7 +120,7 @@ function queueStart() {
       }
     }, 100);
   } else {
-    startApp();
+    window.addEventListener("load", startApp);
   }
   /* jshint +W117 */
 }
