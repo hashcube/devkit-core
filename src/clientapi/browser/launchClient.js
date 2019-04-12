@@ -120,7 +120,7 @@ function queueStart() {
       }
     }, 100);
   } else {
-    window.addEventListener("load", startApp);
+    setTimeout(startApp, 500);
   }
   /* jshint +W117 */
 }
