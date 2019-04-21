@@ -68,7 +68,7 @@ exports.create = function (api, app, config) {
                   chalk.blue('imagemin-pngquant with npm:'),
                   '',
                   chalk.green('   npm install -g https://github.com/gameclosure/devkit-imagemin'),
-                  chalk.green('   npm install -g imagemin-pngquant'),
+                  chalk.green('   npm install -g imagemin-pngquant@4.2.0'),
                   '',
                   chalk.blue('After installing, rerun this release build and devkit will compress'),
                   chalk.blue('images. These are global installs, so you only need to run these'),
@@ -95,12 +95,8 @@ exports.create = function (api, app, config) {
       .then(function (stat) {
         initialSize = stat.size;
         var args = [];
-        if (opts.format == 'png') {
-          if (opts.quantize) {
-            args.push('--plugin', 'pngquant');
-            delete opts.quantize;
-          }
-        }
+        args.push('--plugin', 'pngquant');
+        delete opts.quantize;
 
         for (var key in opts) {
           if (key !== 'format') {
