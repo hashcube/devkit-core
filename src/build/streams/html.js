@@ -375,10 +375,12 @@ exports.GameHTML = Class(function () {
 
         html.push(
           '</body>',
+          '<script src="browser-mobile.js"></script>',
           '<script>', js, '</script>',
 
           // load after config object
           config.browser.footerHTML.join('\n') || '',
+
           '<script>',
           // 'IMG_CACHE=' + JSON.stringify(imgCache) + ';',
 

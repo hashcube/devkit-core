@@ -1,5 +1,4 @@
 window.GC_LOADER = (function (window) {
-  console.log = function () {};
   var document = window.document;
   var userAgent = navigator.userAgent;
   var CONFIG = window.CONFIG;
@@ -109,6 +108,9 @@ window.GC_LOADER = (function (window) {
           document.getElementsByTagName('head')[0].appendChild(el);
           return new Promise(function (resolve) {
               controller.onLoadApp = resolve;
+              setTimeout(function() {
+                controller.onLoadApp("import devkit.browser.launchClient");
+              }, 100);
             })
             .then(function (initialImport) {
               controller.initialImport = initialImport;
@@ -170,6 +172,7 @@ window.GC_LOADER = (function (window) {
                   resolve();
                 }
               };
+              controller.onOrientation && GC_LOADER.onOrientation(true);
             });
           }
         }

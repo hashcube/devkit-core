@@ -165,8 +165,7 @@ exports.setupStreams = function (api, app, config) {
 
         return 'NATIVE=' + native_str + ';'
           + 'CACHE=' + JSON.stringify(cache) + ';\n'
-          + js + ';'
-          + 'GC_LOADER.onLoadApp("import ' + INITIAL_IMPORT + '");';
+          + js + ';';
       }
     });
 
